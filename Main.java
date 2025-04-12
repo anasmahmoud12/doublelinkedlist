@@ -1,0 +1,470 @@
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+import java.util.Scanner;
+
+class Node2 {
+    Object coeff; // Fixed spelling
+    Object exp;
+    Node2 next;
+    Node2 prev;
+
+    Node2() {
+        coeff = 0;
+        exp = 0;
+        next = null;
+        prev = null;
+    }
+
+    Node2(Object c, Object e, Node2 n, Node2 p) { // Changed int to float
+        coeff = c;
+        exp = e;
+        next = n;
+        prev = p;
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+class DoubleList {
+    private Node2 header, tailer;
+    private int size;
+    public DoubleList() {
+        // Initialize header and tailer nodes
+        header = new Node2();
+        tailer = new Node2();
+        size=0;
+        // Link them together
+        header.next = tailer;
+        tailer.prev = header;
+    }
+    public void add(int index, Object element)throws  Exception{
+
+        if (index==0) {
+            Node2 i=new Node2();
+            i.coeff=element;
+            i.next=header.next;
+
+
+            header.next=i;
+            i.prev=header;
+            ++size;
+            return;
+        }
+        if (index==size) {
+
+            Node2 p=new Node2();
+            p.coeff=element;
+            p.prev=tailer.prev;
+            p.prev.next=p;
+            p.next=tailer;
+            tailer.prev=p;
+
+
+
+
+           // add(element);
+        }
+          if (index>size||index<0) {
+            throw new Exception("you insert in not valid index");
+        }
+
+
+        Node2 p=header;
+        Node2 i=new Node2();
+        i.coeff=element;
+
+        while ((index)!=0){
+            p=p.next;
+            --index;}
+
+        i.next=p.next;
+        p.next.prev=i;
+        p.next=i;
+        i.prev=p;
+        ++size;
+    }
+
+
+    public void add(Object element){
+        Node2 i=new Node2();
+        i.coeff=element;
+        i.next=tailer;
+        i.prev=tailer.prev;
+        tailer.prev.next=i;
+        tailer.prev=i;
+        ++size;
+    }
+
+
+    public Object get(int index)throws Exception{
+        if (index>=size||index<0) {
+            throw new Exception("you insert in not valid index");
+        }
+        Node2 p=header;
+        while ((index+1)!=0){
+            p=p.next;
+            --index;
+        }
+        return p.coeff;
+
+    }
+    public void set(int index, Object element) throws Exception{
+        if(index>=size|| index<0){
+            throw new Exception("not valid index to replace");
+        }
+        if(index==0){
+            header.next.coeff=element;
+            return;
+        }
+        if (index==size-1){
+            tailer.prev.coeff=element;
+            return;
+        }
+
+        Node2 p=header;
+        while (index!=0){
+            p=p.next;
+            --index;
+        }
+        p.coeff=element;
+
+    }
+//    public void clear(){
+//        size=0;
+//        header=null;
+//    }
+    public boolean isEmpty(){
+        return header.next==tailer;
+    }
+    public void remove(int index)throws Exception{
+        if (index>=size||index<0){
+            throw new Exception("you delete not valid index");
+        }
+        Node2 p=header;
+        while (index!=0){
+            p=p.next;
+            --index;
+        }
+        p.next.next.prev=p;
+        p.next=p.next.next;
+        --size;
+
+
+
+    }
+    public int size(){
+        return size;
+    }
+    public DoubleList sublist(int fromIndex, int toIndex)throws Exception {
+        if (fromIndex < 0 || toIndex < 0 || fromIndex >= size || toIndex >= size|| toIndex<fromIndex) {
+            throw new Exception("nto");
+        }
+        DoubleList copy=new DoubleList();
+        Node2 p=header;
+        int num=toIndex-fromIndex+1;
+        int j=fromIndex;
+        while ((j+1)!=0){
+            p=p.next;
+            --j;
+        }
+        int count=0;
+
+        while(count!=num){
+            copy.add(p.coeff);
+            ++count;
+            p=p.next;
+        }
+        return copy;
+
+    }
+
+
+
+
+//    public DoubleList copy()throws Exception {
+//
+//        DoubleList copy = new DoubleList();
+//        Node2 f1 = header;
+////Node2 f2=copy.header;
+//        while (f1.next != tailer) {
+//
+//            f1 = f1.next;
+//            copy.add(f1.coeff);
+//        }
+//
+//        return copy;
+//
+//    }
+    public boolean contains(Object o){
+        Node2 p=header;
+        while (p.next!=tailer){
+            p=p.next;
+            if(p.coeff==o){
+                return true;
+            }
+        }
+        return false;
+    }
+
+//    public void insert_in_sortedlist(int val)throws Exception{
+//        Node2 p=header;
+//        int count=0;
+//        while ((int)(p.next.coeff)<val &&p.next!=tailer)
+//        {
+//            ++count;
+//            p=p.next;
+//        }
+//
+//        add(count,val);
+//
+//    }
+    public void print(){
+        System.out.print("[");
+        Node2 p= header;
+        while (p.next.next!=tailer){
+            p=p.next;
+            System.out.printf("%d, ",(int)p.coeff);
+        }
+        System.out.printf("%d]",tailer.prev.coeff);
+    }
+
+//    public  void delete_first_accourance(int val){
+//        Node2 p= header;
+//        while (p!=tailer&& (int)p.next.coeff!=val){
+//            p=p.next;
+//        }
+//        if (p!=tailer){
+//            p.next=p.next.next;
+//            p.next.prev=p;
+//        }
+//
+//    }
+//    public  void delete_allacoure(int val) {
+//        Node2 p = header;
+//        while (p.next != tailer) {
+//            if ((int) p.next.coeff == val ) {
+//                p.next = p.next.next;
+//            } else {
+//                p = p.next;
+//            }
+//        }
+//    }
+//    public  void reverse(){
+//        if (size==0){
+//            return;
+//        }
+//        Node2 p=header;
+//        Node2 reverse=new Node2();
+//        reverse.prev=null;
+//        reverse.next=null;
+//
+//        Node2 temp=header;
+//        header=tailer;
+//        tailer=temp;
+//
+//
+//
+//        while (p!=null){
+//            reverse.next=p.next;
+//            p.next=reverse.prev;
+//            p.prev=reverse.next;
+//            reverse.prev=p;
+//            p=reverse.next;
+//        }
+
+
+
+
+//    }
+
+//    public boolean order(){
+//        boolean order =true;
+//        Node2 p=header.next;
+//        while (p.next!=tailer){
+//            if ((int)header.next.coeff<(int)header.next.next.coeff) {
+//                if ((int) p.coeff > (int) p.next.coeff) {
+//                    order = false;
+//                    return order;
+//                }
+//            }
+//
+//
+//            if ((int)header.next.coeff>(int)header.next.next.coeff) {
+//                if ((int) p.coeff < (int) p.next.coeff) {
+//                    order = false;
+//                    return order;
+//                }
+//            }
+//
+//            p=p.next;
+//
+//        }
+//        return order;
+//
+//    }
+//    public void remove_dublicated() {
+//        if (size == 0) {
+//            return;
+//        }
+//
+//        Node2 p = header.next;
+//
+//        while (p.next != tailer) {
+//            if ((int)p.coeff == (int)p.next.coeff) {
+//                p.next = p.next.next;
+//
+//            } else {
+//                p = p.next;
+//            }
+//
+//
+//        }
+//
+//
+//    }
+
+
+
+
+
+
+
+}
+
+
+
+
+public class Main {
+
+
+    public static void main(String[]args)throws Exception{
+        DoubleList f1 = new DoubleList();
+        DoubleList f2=new DoubleList();
+        Scanner input=new Scanner(System.in);
+
+        String list_str=input.nextLine().trim();
+
+        if (!list_str.equals("[]")){
+            list_str = list_str.substring(1, list_str.length() - 1);
+            String[] char_num = list_str.split(",");
+            int[] list = new int[char_num.length];
+            for (int i = 0; i < char_num.length; ++i) {
+                list[i] = Integer.parseInt(char_num[i].trim());
+            }
+
+            int size = list.length;
+
+            for (int i = 0; i < size; ++i) {
+
+                int value = list[i];
+                f1.add(value);
+            }
+
+        }
+
+        String nedd = input.nextLine();
+        if (nedd.equals("add")) {
+            int value = input.nextInt();
+            f1.add(value);
+            f1.print();
+            return;
+        }
+
+        if (nedd.equals("addToIndex")){
+            int index=input.nextInt();
+            int value=input.nextInt();
+            f1.add(index,value);
+            f1.print();
+            return;
+        }
+        if (nedd.equals("isEmpty")){
+            if (f1.isEmpty()){
+                System.out.println("True");
+            }
+            else {
+                System.out.println("False");
+            }
+            return;
+        }
+        if (nedd.equals("set")){
+            int index=input.nextInt();
+            int value=input.nextInt();
+            f1.set(index,value);
+            f1.print();
+            return;
+        }
+        try {
+            if (nedd.equals("get")) {
+                int index = input.nextInt();
+                System.out.println(f1.get(index));
+                return;
+
+            }
+        }
+        catch ( Exception e){
+            System.out.println("Error");
+            return;
+        }
+
+        if (nedd.equals("size")){
+            System.out.println(f1.size());
+            return;
+        }
+
+        if (nedd.equals("contains")){
+            int value=input.nextInt();
+            if(f1.contains(value)) {
+                System.out.println("True");
+            }
+            else{
+                System.out.println("False");
+            }
+            return;
+        }
+
+
+        if (nedd.equals("sublist")){
+            int index1=input.nextInt();
+            int index2=input.nextInt();
+            f2=f1.sublist(index1,index2);
+
+            f2.print();
+            return;
+        }
+
+
+        if (nedd.equals("clear")){
+            System.out.println("[]");
+            return;
+        }
+        if (nedd.equals("remove")){
+          int index=input.nextInt();
+          f1.remove(index);
+          f1.print();
+        }
+
+
+
+    }
+}
