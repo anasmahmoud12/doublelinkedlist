@@ -1,0 +1,285 @@
+import java.util.Scanner;
+import java.lang.Math;
+public class Main {
+
+    public static DoubleList set(String str_list) {
+      DoubleList s = new DoubleList();
+      if (!str_list.equals("[]")) {
+          str_list = str_list.substring(1, str_list.length() - 1);
+          String[] char_num = str_list.split(",");
+
+          int[] list1 = new int[char_num.length];
+          for (int i = 0; i < char_num.length; ++i) {
+              list1[i] = Integer.parseInt(char_num[i].trim());
+          }
+
+          int size=list1.length;
+//System.out.println(size);
+          int a=size-1;
+          for (int i=0;i<size;++i){
+              int value=list1[i];
+              int exp=a;
+              s.add(value,exp);
+              --a;
+          }
+      }
+      return s;
+
+  }
+
+    public static void add(DoubleList list1, DoubleList list2) {
+        DoubleList result = new DoubleList();
+        int size_a=list1.size();
+        int size_b=list2.size();
+
+        if (size_a==size_b) {
+            --size_a;
+            Node2 p1=list1.header.next;
+            Node2 p2=list2.header.next;
+            while (p1!=list1.tailer) {
+                int value=(int)p1.coeff+(int)p2.coeff;
+                result.add(value,size_a);
+         --size_a;
+         p1=p1.next;
+         p2=p2.next;
+            }
+            result.print();
+            return ;
+        }
+
+
+        if (size_a>size_b){
+            --size_a;
+            --size_b;
+            Node2 p1=list1.header.next;
+            Node2 p2=list2.header.next;
+            while (size_a>size_b) {
+                result.add(p1.coeff,size_a);
+                --size_a;
+                p1=p1.next;
+            }
+            while (p1!=list1.tailer) {
+                int value=(int)p1.coeff+(int)p2.coeff;
+                result.add(value,size_a);
+                --size_a;
+                p1=p1.next;
+                p2=p2.next;
+            }
+
+
+            result.print();
+            return ;
+        }
+
+        if (size_a<size_b){
+            --size_a;
+            --size_b;
+            Node2 p1=list1.header.next;
+            Node2 p2=list2.header.next;
+            while (size_a<size_b) {
+                result.add(p2.coeff,size_b);
+                --size_b;
+                p2=p2.next;
+            }
+            while (p2!=list2.tailer) {
+                int value=(int)p1.coeff+(int)p2.coeff;
+                result.add(value,size_b);
+                --size_b;
+                p2=p2.next;
+                p1=p1.next;
+            }
+
+
+            result.print();
+            return ;
+        }
+
+
+
+    }
+
+    public static void sub(DoubleList list1, DoubleList list2){
+        DoubleList result = new DoubleList();
+        int size_a=list1.size();
+        int size_b=list2.size();
+
+
+        if (size_a==size_b) {
+            --size_a;
+            Node2 p1=list1.header.next;
+            Node2 p2=list2.header.next;
+            while (p1!=list1.tailer) {
+                int value=(int)p1.coeff-(int)p2.coeff;
+                result.add(value,size_a);
+                --size_a;
+                p1=p1.next;
+                p2=p2.next;
+            }
+            result.print();
+            return ;
+        }
+
+
+        if (size_a>size_b){
+            --size_a;
+            --size_b;
+            Node2 p1=list1.header.next;
+            Node2 p2=list2.header.next;
+            while (size_a>size_b) {
+                result.add(p1.coeff,size_a);
+                --size_a;
+                p1=p1.next;
+            }
+            while (p1!=list1.tailer) {
+                int value=(int)p1.coeff-(int)p2.coeff;
+                result.add(value,size_a);
+                --size_a;
+                p1=p1.next;
+                p2=p2.next;
+            }
+
+
+            result.print();
+            return ;
+        }
+
+        if (size_a<size_b){
+            --size_a;
+            --size_b;
+            Node2 p1=list1.header.next;
+            Node2 p2=list2.header.next;
+            while (size_a<size_b) {
+                result.add(p2.coeff,size_b);
+                --size_b;
+                p2=p2.next;
+            }
+            while (p2!=list2.tailer) {
+                int value=(int)p1.coeff-(int)p2.coeff;
+                result.add(value,size_b);
+                --size_b;
+                p2=p2.next;
+                p1=p1.next;
+            }
+
+
+            result.print();
+            return ;
+        }
+
+
+    }
+
+
+public static void clear(DoubleList list){
+        list.clear();
+        list.print();
+        return;
+    }
+    public static void eval(DoubleList list,double x){
+        //int size=list.size();
+        double sum=0;
+        Node2 p1=list.header.next;
+        while (p1!=list.tailer){
+            double value=(double)p1.coeff*Math.pow(x,(double)p1.exp);
+sum=sum+value;
+p1=p1.next;
+System.out.printf("adf");
+        }
+
+System.out.printf("%.2f",sum);
+
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  public static void main(String[] args) {
+        DoubleList a =new DoubleList();
+        DoubleList b =new DoubleList();
+        DoubleList c =new DoubleList();
+        Scanner input = new Scanner(System.in);
+
+        while (input.hasNextLine()){
+            String y=input.nextLine();
+
+            if (y.equals("set")){
+                String ch=input.nextLine();
+                String j=input.nextLine();
+                if (ch.equals("A"))
+                {
+                    a=set(j);
+                }
+                else if(ch.equals("B")){
+                    b=set(j);
+                }
+                else if(ch.equals("C")){
+                    c=set(j);
+                }
+            }
+
+            if (y.equals("add")){
+                add(a,b);
+
+            }
+            if (y.equals("sub")){
+                sub(a,b);
+            }
+            if (y.equals("clear")){
+                String name=input.nextLine();
+                if (name.equals("A")){
+                    clear(a);
+                }
+                if (name.equals("B")){
+                    clear(b);
+                }
+                if (name.equals("C")){
+                    clear(c);
+                }
+
+            }
+
+            if (y.equals("eval")){
+                String name=input.nextLine();
+                double x=input.nextDouble();
+                if (name.equals("A")){
+                    eval(a,x);
+                }
+                if (name.equals("B")){
+                    eval(b,x);
+                }
+                if (name.equals("C")){
+                    eval(c,x);
+                }
+
+
+            }
+
+
+
+
+
+
+
+
+
+
+
+        }
+
+
+
+
+    }
+
+}
